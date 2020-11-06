@@ -1,10 +1,10 @@
 package com.cg.mts.exception;
 
-public class InvalidCabException extends Exception{
+public class InvalidCabException extends RuntimeException{
 
 	private static final long serialVersionUID = 1L;
 
-	public InvalidCabException() {
+	public InvalidCabException()  {
 		super();
 	}
 

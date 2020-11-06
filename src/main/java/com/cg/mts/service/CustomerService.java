@@ -3,6 +3,7 @@ package com.cg.mts.service;
 //import com.cg.mts.dao.CustomerDao;
 //import com.cg.mts.util.Util;
 import com.cg.mts.entities.Customer;
+import com.cg.mts.exception.CabNotFoundException;
 import com.cg.mts.exception.CustomerNotFoundException;
 import com.cg.mts.exception.InvalidCustomerException;
 import com.cg.mts.repository.ICustomerRepository;
@@ -34,19 +35,32 @@ public class CustomerService implements ICustomerService {
 
 	@Override
 	public Customer updateCustomer(Customer customer) {
-		customer = customerDao.save(customer);
+		boolean exists= customerDao.existsById(customer.getCustomerId());
+        if(!exists){
+            throw new InvalidCustomerException("Customer does not exists for id="+customer.getCustomerId());
+        }
+		customer=customerDao.save(customer);
 		return customer;
 	}
 
 	@Override
 	public Customer deleteCustomer(Customer customer) {
-		customerDao.delete(customer);
+		Optional<Customer> optional=customerDao.findById(customer.getCustomerId());
+		if(!optional.isPresent()){
+            throw new CustomerNotFoundException("Product not found for id="+customer.getCustomerId());
+        }
+		customerDao.deleteById(customer.getCustomerId());
+		
 		return customer;
 	}
 
 	@Override
 	public List<Customer> viewCustomers() {
 		List<Customer> listOfCustomer = customerDao.findAll();
+		if(listOfCustomer.size()==0)
+		{
+			throw new CustomerNotFoundException("Customer not found for id="+customer);
+		}
 		return listOfCustomer;
 	}
 

@@ -2,6 +2,7 @@ package com.cg.mts.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -23,35 +24,49 @@ import com.cg.mts.entities.Cab;
 public class CabService implements ICabService {
 
 	@Autowired
-	private ICabRepository cabDao;
+	private ICabRepository cabRepository;
 
 	@Override
 	public Cab insertCab(Cab cab) {
-		cab = cabDao.save(cab);
+		cab = cabRepository.save(cab);
 		return cab;
 	}
 
 	@Override
 	public Cab updateCab(Cab cab) {
-		cab = cabDao.save(cab);
+		boolean checkIfExists= cabRepository.existsById(cab.getCabId());
+        if(!checkIfExists){
+            throw new InvalidCabException("Cab does not exists for id="+cab.getCabId());
+        }
+		cab = cabRepository.save(cab);
 		return cab;
+		
 	}
 
 	@Override
 	public Cab deleteCab(Cab cab) {
-		cabDao.delete(cab);
+		Optional<Cab> optional=cabRepository.findById(cab.getCabId());
+		if(!optional.isPresent()){
+            throw new CabNotFoundException("Cab not found for id="+cab.getCabId());
+        }
+		cabRepository.deleteById(cab.getCabId());
+		
 		return cab;
 	}
 
 	@Override
 	public List<Cab> viewCabsOfType(String carType) {
-		List<Cab> cabsOfCarType = cabDao.findByCarType(carType);
+		List<Cab> cabsOfCarType = cabRepository.findByCarType(carType);
+		if(cabsOfCarType.size()==0)
+		{
+			 throw new CabNotFoundException("Cab not found for id="+carType);
+		}
 		return cabsOfCarType;
 	}
 
 	@Override
 	public int countCabsOfType(String carType) {
-		int count = cabDao.countCabsOfType(carType);
+		int count = cabRepository.countCabsOfType(carType);
 		return count;
 	}
 
