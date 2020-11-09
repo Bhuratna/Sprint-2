@@ -12,10 +12,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Entity
+@Table(name="tripsbooking")
 @NamedQueries({
 @NamedQuery(query = "Select e from TripBooking e where e.customerId = :customerId", name = "find tripbooking by customerId"),
 @NamedQuery(query = "select e from TripBooking e where e.customerId = :customerId and e.fromDateTime = :fromdatetime and e.toDateTime = :todatetime", name = "find tripbooking by multiple")

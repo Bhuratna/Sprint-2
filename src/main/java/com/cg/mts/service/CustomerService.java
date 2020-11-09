@@ -59,7 +59,7 @@ public class CustomerService implements ICustomerService {
 		List<Customer> listOfCustomer = customerDao.findAll();
 		if(listOfCustomer.size()==0)
 		{
-			throw new CustomerNotFoundException("Customer not found for id="+customer);
+			throw new CustomerNotFoundException("Customer not found for id=");
 		}
 		return listOfCustomer;
 	}

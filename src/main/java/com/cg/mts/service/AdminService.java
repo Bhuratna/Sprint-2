@@ -17,7 +17,9 @@ import java.util.regex.Pattern;
 import com.cg.mts.exception.AdminNotFoundException;
 import com.cg.mts.exception.CabNotFoundException;
 import com.cg.mts.exception.CustomerNotFoundException;
+import com.cg.mts.exception.InvalidAdminException;
 import com.cg.mts.exception.InvalidCustomerException;
+import com.cg.mts.exception.TripNotFoundException;
 import com.cg.mts.repository.IAdminRepository;
 //import com.cg.mts.util.Util;
 import com.cg.mts.entities.Admin;
@@ -30,58 +32,80 @@ import com.cg.mts.entities.TripBooking;
 public class AdminService implements IAdminService {
 
 	@Autowired
-	private IAdminRepository adminDao;
+	private IAdminRepository adminRepository;
 
 	@Override
 	public Admin insertAdmin(Admin admin) {
-		// TODO Auto-generated method stub
-		admin = adminDao.save(admin);
+		admin = adminRepository.save(admin);
 		return admin;
 	}
 
 	@Override
 	public Admin updateAdmin(Admin admin) {
-		admin = adminDao.save(admin);
+		boolean checkIfExists = adminRepository.existsById(admin.getAdminId());
+		if(!checkIfExists) {
+			throw new AdminNotFoundException("Adminn with admin id " + admin.getAdminId() + " does not exists");
+		}
+		admin = adminRepository.save(admin);
 		return admin;
 	}
 
 	@Override
 	public Admin deleteAdmin(int adminId) {
-		Optional<Admin> adminOptional = adminDao.findById(adminId);
+		Optional<Admin> adminOptional = adminRepository.findById(adminId);
+		if(!adminOptional.isPresent()) {
+			throw new AdminNotFoundException("No admin found with admin id as "+adminId);
+		}
 		Admin admin = adminOptional.get();
-		adminDao.delete(admin);
+		adminRepository.delete(admin);
 		return admin;
 		
 	}
 
 	@Override
 	public List<TripBooking> getAllTrips(int customerId) {
-		// TODO Auto-generated method stub
-		return null;
+		List<TripBooking> trips = null;
+		trips = adminRepository.getAllTrips(customerId);
+		if (trips.size()==0) {
+			throw new CustomerNotFoundException("No trips found with the customerid " + customerId);
+		}
+		return trips;
 	}
 
 	@Override
 	public List<TripBooking> getTripsCabwise() {
-		// TODO Auto-generated method stub
-		return null;
+		List<TripBooking> trips = adminRepository.getTripsCabwise();
+		if(trips.size() == 0) {
+			throw new CabNotFoundException("No cabs are there for the trips");
+		}
+		return trips;
 	}
 
 	@Override
 	public List<TripBooking> getTripsCustomerwise() {
-		// TODO Auto-generated method stub
-		return null;
+		List<TripBooking> trips = adminRepository.getTripsCustomerwise();
+		if(trips.size() == 0) {
+			throw new TripNotFoundException("No trips per customer");
+		}
+		return trips;
 	}
 
 	@Override
 	public List<TripBooking> getTripsDatewise() {
-		// TODO Auto-generated method stub
-		return null;
+		List<TripBooking> trips = adminRepository.getTripsDatewise();
+		if(trips.size() == 0) {
+			throw new TripNotFoundException("No trips available date wise");
+		}
+		return trips;
 	}
 
 	@Override
 	public List<TripBooking> getAllTripsForDays(int customerId, LocalDateTime fromDate, LocalDateTime toDate) {
-		// TODO Auto-generated method stub
-		return null;
+		List<TripBooking> trips = adminRepository.getAllTripsForDays(customerId, fromDate, toDate);
+		if(trips.size() == 0) {
+			throw new CustomerNotFoundException("No Trip for customer id " + customerId);
+		}
+		return trips;
 	}
 
 	

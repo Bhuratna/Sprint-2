@@ -3,8 +3,10 @@ package com.cg.mts.entities;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name="admintable")
 public class Admin extends AbstractUser {
 	@Id
 	@GeneratedValue
@@ -26,3 +28,4 @@ public class Admin extends AbstractUser {
 		super();
 	}
 }
+

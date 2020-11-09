@@ -14,4 +14,6 @@ public interface ICustomerRepository extends JpaRepository<Customer, Integer> {
 //	public List<Customer>viewCustomers() throws CustomerNotFoundException;
 //	public Customer viewCustomer(int customerId) throws CustomerNotFoundException;
 //	public Customer validateCustomer(String username, String password) throws CustomerNotFoundException;
+	public Customer findByUsernameAndPassword(String username, String password);
+	public Customer findByUsername(String username);
 }

@@ -5,8 +5,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 
 @Entity
+@Table(name="customertable")
 @NamedQuery(query = "select c from Customer c where c.username = :Username and c.password = :Password", name = "find customer by username and password")
 public class Customer extends AbstractUser {
 

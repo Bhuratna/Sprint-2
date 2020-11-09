@@ -13,4 +13,5 @@ public interface ITripBookingRepository extends JpaRepository<TripBooking, Integ
 //	public List<TripBooking> viewAllTripsCustomer(int customerId);
 //	public TripBooking calculateBill(int customerId);
 	public List<TripBooking> findByCustomerId(int customerId);
+	public TripBooking findBillByCustomerId(int customerId);
 }
