@@ -1,9 +1,12 @@
 package com.cg.mts;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -64,16 +67,18 @@ import com.cg.mts.service.CabService;
 		}
 		@Test
 		public void testDeleteCab() {
-			Cab cab = new Cab();
-			cab.setCabId(5);
-			cab.setCarType("Bhuratna");
-			cab.setPerKmRate(30.5f);
-			
-			Mockito.when(repo.findById(1)).thenReturn(Optional.of(cab));
-			Mockito.when(repo.existsById(cab.getCabId())).thenReturn(false);
-
-			assertFalse(repo.existsById(cab.getCabId()));
+			Cab cab = new Cab("Abc", 4.5f);
+			Mockito.when(repo.findById(cab.getCabId())).thenReturn(Optional.of(cab)).thenReturn(null);
+			assertEquals(service.deleteCab(cab), cab);
 		}
-	
+		
+		@Test
+		public void viewCabssType() {
+			Cab cab = new Cab("Abc", 4.5f);
+			List<Cab> cabs = new ArrayList<Cab>();
+			cabs.add(cab);
+			Mockito.when(repo.findByCarType("Abc")).thenReturn(cabs);
+			assertEquals(service.viewCabsOfType("Abc"), cabs);
+		}
 	
 }

@@ -9,10 +9,8 @@ import org.springframework.data.repository.query.Param;
 
 import com.cg.mts.entities.Admin;
 import com.cg.mts.entities.TripBooking;
-import com.cg.mts.exception.AdminNotFoundException;
 import com.cg.mts.exception.CabNotFoundException;
 import com.cg.mts.exception.CustomerNotFoundException;
-import com.cg.mts.exception.TripNotFoundException;
 
 public interface IAdminRepository extends JpaRepository<Admin, Integer> {
 	// public Admin insertAdmin(Admin admin);

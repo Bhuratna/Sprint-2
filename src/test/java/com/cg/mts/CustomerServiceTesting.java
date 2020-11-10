@@ -4,6 +4,10 @@ package com.cg.mts;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,7 +17,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import com.cg.mts.entities.Customer;
-import com.cg.mts.exception.InvalidCabException;
 import com.cg.mts.exception.InvalidCustomerException;
 import com.cg.mts.repository.ICustomerRepository;
 import com.cg.mts.service.CustomerService;
@@ -63,4 +66,26 @@ public class CustomerServiceTesting {
 			Executable exe=()->service.updateCustomer(cust);
 			assertThrows(InvalidCustomerException.class,exe);
 	} 
+	@Test
+	void testViewCustomer() {
+		Customer cust = Mockito.mock(Customer.class);
+		int customerId = 31;
+		Mockito.when(repo.findById(customerId)).thenReturn(Optional.of(cust));
+		assertEquals(cust, service.viewCustomer(customerId));
+	}
+	
+	@Test
+	void testViewCustomers() {
+		List<Customer> customer = new ArrayList<Customer>();
+		customer.add(new Customer("ABC", "ABC", "ABC", "ABC"));
+		Mockito.when(repo.findAll()).thenReturn(customer);
+		assertEquals(customer , service.viewCustomers());
+	}
+	
+	@Test
+	void testValidateCustomers() {
+		Customer customer = new Customer("ABC", "ABC", "ABC", "ABC");
+		Mockito.when(repo.findByUsernameAndPassword("ABC", "ABC")).thenReturn(customer);
+		assertEquals(customer, service.validateCustomer("ABC", "ABC"));
+	}
 }

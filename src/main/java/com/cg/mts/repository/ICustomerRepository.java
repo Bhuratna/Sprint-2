@@ -1,11 +1,9 @@
 package com.cg.mts.repository;
 
-import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.cg.mts.entities.Customer;
-import com.cg.mts.exception.CustomerNotFoundException;
 
 public interface ICustomerRepository extends JpaRepository<Customer, Integer> {
 //	public Customer insertCustomer(Customer customer);
