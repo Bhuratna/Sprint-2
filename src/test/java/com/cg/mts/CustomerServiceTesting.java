@@ -1,56 +1,66 @@
 package com.cg.mts;
 
-import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.Optional;
-
-import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.function.Executable;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
-
-import com.cg.mts.entities.Cab;
+import org.mockito.junit.jupiter.MockitoExtension;
 import com.cg.mts.entities.Customer;
+import com.cg.mts.exception.InvalidCabException;
 import com.cg.mts.exception.InvalidCustomerException;
-
 import com.cg.mts.repository.ICustomerRepository;
 import com.cg.mts.service.CustomerService;
 
-	@RunWith(SpringRunner.class)
-	@SpringBootTest
-	public class CustomerServiceTesting {
-		@Autowired
-		private CustomerService service;
+@ExtendWith(MockitoExtension.class)
+public class CustomerServiceTesting {
+	@InjectMocks
+	private CustomerService service;
 
-		@MockBean
-		private ICustomerRepository repo;
-		@BeforeEach
-		void setUp() throws Exception {
-		}
-		
-		@Test
-		 void testCreateCustomer() throws InvalidCustomerException {
-
-			Customer cust = new Customer("Bhura","fhgvhg","7023514781", "gvgv");
-			
-
-			Mockito.when(repo.save(cust)).thenReturn(cust); 
-			assertThat(service.insertCustomer(cust)).isEqualTo(cust);
-
-		}
-		@Test
-		public void testDeleteCustomer() {
-			Customer cust = new Customer("Bhura","fhgvhg","7023514781", "gvgv");
-			
-			Mockito.when(repo.findById(1)).thenReturn(Optional.of(cust));
-			Mockito.when(repo.existsById(cust.getCustomerId())).thenReturn(false);
-
-			assertFalse(repo.existsById(cust.getCustomerId()));
-		}
+	@Mock
+	private ICustomerRepository repo;
+	@BeforeEach
+	void setUp() throws Exception {
 	}
+	
+	@Test
+	 void testInsertCustomer() throws InvalidCustomerException {
+		
+		Customer cust = Mockito.mock(Customer.class);
+		Customer updated=Mockito.mock(Customer.class);
+		Mockito.when(repo.save(cust)).thenReturn(updated); 
+		 Customer result =service.insertCustomer(cust);
+		assertEquals(updated,result);
+
+	}
+	
+	@Test
+	void testUpdateCustomer_1()  {
+		Customer cust = Mockito.mock(Customer.class);
+		Customer updated=Mockito.mock(Customer.class);
+	   int custId=50;
+	   Mockito.when(cust.getCustomerId()).thenReturn(custId);
+		Mockito.when(repo.existsById(50)).thenReturn(true);
+		
+		Mockito.when(repo.save(cust)).thenReturn(updated);
+		Customer result=service.updateCustomer(cust);
+		assertEquals(updated,result);
+
+	}
+	@Test
+	void testUpdateCustomer_2()
+	{
+		Customer cust = Mockito.mock(Customer.class);
+		int customerId=20;
+		 Mockito.when(cust.getCustomerId()).thenReturn(customerId);
+			Mockito.when(repo.existsById(customerId)).thenReturn(false);
+			Executable exe=()->service.updateCustomer(cust);
+			assertThrows(InvalidCustomerException.class,exe);
+	} 
+}
