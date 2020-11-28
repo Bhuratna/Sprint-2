@@ -3,6 +3,7 @@ package com.cg.mts.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,6 +23,7 @@ import com.cg.mts.service.ITripBookingService;
  * This annotation defines a class as a controller in spring boot. Rest
  * controller consists of @Controller and @ResponseBody annotation
  */
+@CrossOrigin("*")
 public class TripBookingController {
 
 	/*
@@ -58,13 +60,14 @@ public class TripBookingController {
 	 * This method will delete a tripbooking object from the database table, which
 	 * we have passed in the method
 	 */
-	@DeleteMapping("/delete")
-	public void delete(@RequestBody TripBooking tripBooking) {
+	@DeleteMapping("/delete/{id}")
+	public void delete(@PathVariable("id") int tripBookingId) {
+		TripBooking tripBooking = tripBookingService.getTripBooking(tripBookingId);
 		tripBooking = tripBookingService.deleteTripBooking(tripBooking);
 	}
 
 	/* This will return a list of Tripbookings based on customer id */
-	@GetMapping("/get/customerWiseTrips/{id}")
+	@GetMapping("/retrieve/customerWiseTrips/{id}")
 	public List<TripBooking> getTrips(@PathVariable("id") int customerId) {
 		List<TripBooking> trips = tripBookingService.viewAllTripsCustomer(customerId);
 		return trips;
@@ -74,7 +77,7 @@ public class TripBookingController {
 	 * This will return the bill of the trip booking of the customer whose customer
 	 * id we will pass in the url
 	 */
-	@GetMapping("/get/calculateBill/{id}")
+	@GetMapping("/retrieve/calculateBill/{id}")
 	public Float calculateBill(@PathVariable("id") int customerId) {
 		TripBooking tripBooking = tripBookingService.calculateBill(customerId);
 		float bill = tripBooking.getBill();

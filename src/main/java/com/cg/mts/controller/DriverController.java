@@ -3,6 +3,7 @@ package com.cg.mts.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,6 +23,7 @@ import com.cg.mts.service.IDriverService;
  * controller consists of @Controller and @ResponseBody annotation
  */
 @RestController
+@CrossOrigin("*")
 public class DriverController {
 
 	/*
@@ -67,7 +69,7 @@ public class DriverController {
 	 * This method will return a driver object whose driver id we will pass in the
 	 * url
 	 */
-	@GetMapping("/get/{id}")
+	@GetMapping("/retrieve/{id}")
 	public Driver getDriver(@PathVariable("id") int driverId) {
 		Driver driver = driverService.viewDriver(driverId);
 		return driver;
@@ -76,9 +78,19 @@ public class DriverController {
 	/*
 	 * This method will return list of all the drivers whose rating is 4.5 and above
 	 */
-	@GetMapping("/get/viewBestDrivers")
+	@GetMapping("/retrieve/viewBestDrivers")
 	public List<Driver> viewBestDrivers() {
 		List<Driver> bestDrivers = driverService.viewBestDrivers();
 		return bestDrivers;
+	}
+
+	/*
+	 * This method will return driver object whose username and password matches
+	 * with the one we would pass in the url
+	 */
+	@GetMapping("/validateDriver/{username}/{password}")
+	public Driver validateDriver(@PathVariable("username") String username, @PathVariable("password") String password) {
+		Driver driver = driverService.validateDriver(username, password);
+		return driver;
 	}
 }

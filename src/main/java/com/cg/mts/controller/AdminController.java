@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +25,7 @@ import com.cg.mts.service.IAdminService;
  * controller consists of @Controller and @ResponseBody annotation
  */
 @RestController
+@CrossOrigin("*")
 public class AdminController {
 
 	/*
@@ -69,28 +71,28 @@ public class AdminController {
 	 * This method will return a list of tripbookings from the table where id
 	 * matches with the one we have passed
 	 */
-	@GetMapping("/get/tripsBooking/{id}")
+	@GetMapping("/retrieve/tripsBooking/{id}")
 	public List<TripBooking> getTripBooking(@PathVariable("id") int id) {
 		List<TripBooking> trp = adminService.getAllTrips(id);
 		return trp;
 	}
 
 	/* This method will return a list of TripBooking based on each cabType */
-	@GetMapping("/get/getCabWise")
+	@GetMapping("/retrieve/getCabWise")
 	public List<TripBooking> getCabWise() {
 		List<TripBooking> trp = adminService.getTripsCabwise();
 		return trp;
 	}
 
 	/* This method will return a list of TripBookings group based on customers */
-	@GetMapping("/get/getTripsCustomerwise")
+	@GetMapping("/retrieve/getTripsCustomerwise")
 	public List<TripBooking> getCustomerWise() {
 		List<TripBooking> trp = adminService.getTripsCustomerwise();
 		return trp;
 	}
 
 	/* This method will return a list of TripBookings based on Trip Dates */
-	@GetMapping("/get/getTripsDatewise")
+	@GetMapping("/retrieve/getTripsDatewise")
 	public List<TripBooking> getTripsDatewise() {
 		List<TripBooking> trp = adminService.getTripsDatewise();
 		return trp;
@@ -100,11 +102,21 @@ public class AdminController {
 	 * This method will return a list of TripBookings based on the customerId,
 	 * fromDate, and toDate
 	 */
-	@GetMapping("/get/getAllTripsForDays/{id}/{date1}/{date2}")
+	@GetMapping("/retrieve/getAllTripsForDays/{id}/{date1}/{date2}")
 	public List<TripBooking> getAllTripsForDays(@PathVariable("id") int customerId,
 			@PathVariable("date1") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fromDateTime,
 			@PathVariable("date2") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime toDateTime) {
 		List<TripBooking> trp = adminService.getAllTripsForDays(customerId, fromDateTime, toDateTime);
 		return trp;
+	}
+
+	/*
+	 * This method will return admin object whose username and password matches with
+	 * the one we would pass in the url
+	 */
+	@GetMapping("/validateAdmin/{username}/{password}")
+	public Admin vaidateAdmin(@PathVariable("username") String username, @PathVariable("password") String password) {
+		Admin admin = adminService.validateAdmin(username, password);
+		return admin;
 	}
 }

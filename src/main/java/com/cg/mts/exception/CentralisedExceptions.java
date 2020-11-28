@@ -1,13 +1,15 @@
 package com.cg.mts.exception;
 
-
+import com.cg.mts.exception.InvalidCustomerException;
+import com.cg.mts.exception.CustomerNotFoundException;
+import com.cg.mts.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
-public class GlobalExceptions {
+public class CentralisedExceptions {
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	@ExceptionHandler(CustomerNotFoundException.class)
 	public String handleCustomerNotFound(CustomerNotFoundException e) {
@@ -62,7 +64,7 @@ public class GlobalExceptions {
 		return e.getMessage();
 	}
 
-	@ResponseStatus(HttpStatus.NOT_FOUND)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(TripNotFoundException.class)
 	public String handleTripNotFoundException(TripNotFoundException e) {
 		return e.getMessage();

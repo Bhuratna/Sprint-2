@@ -1,6 +1,8 @@
 package com.cg.mts.service;
 
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -90,5 +92,12 @@ public class TripBookingService implements ITripBookingService {
 			throw new TripNotFoundException("No trip bill found for the customer id " + customerId);
 		}
 		return tripBooking;
+	}
+	
+	@Override
+	public TripBooking getTripBooking(int tripBookingId) {
+		Optional<TripBooking> tripBooking = tripBookingRepository.findById(tripBookingId);
+		TripBooking tripBook = tripBooking.get();
+		return tripBook;
 	}
 }

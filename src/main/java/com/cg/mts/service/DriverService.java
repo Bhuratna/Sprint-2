@@ -98,4 +98,17 @@ public class DriverService implements IDriverService {
 		return driver;
 	}
 
+	/*
+	 * this method will return driver object with matching username and password. if
+	 * there is no matching username and password, we will throw driver not found
+	 * exception
+	 */
+	@Override
+	public Driver validateDriver(String username, String password) {
+		Driver validDriver = driverRepository.findByUsernameAndPassword(username, password);
+		if (validDriver == null) {
+			throw new DriverNotFoundException("Driver not found with matching username and password");
+		}
+		return validDriver;
+	}
 }

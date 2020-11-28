@@ -10,4 +10,5 @@ public interface ITripBookingService {
 	public TripBooking deleteTripBooking(TripBooking tripBooking);
 	public List<TripBooking> viewAllTripsCustomer(int customerId);
 	public TripBooking calculateBill(int customerId);
+	public TripBooking getTripBooking(int tripBookingId);
 }

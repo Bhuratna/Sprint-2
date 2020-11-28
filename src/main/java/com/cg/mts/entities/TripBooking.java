@@ -3,25 +3,18 @@ package com.cg.mts.entities;
 import java.time.LocalDateTime;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Entity
 @Table(name="tripsbooking")
-@NamedQueries({
-@NamedQuery(query = "Select e from TripBooking e where e.customerId = :customerId", name = "find tripbooking by customerId"),
-@NamedQuery(query = "select e from TripBooking e where e.customerId = :customerId and e.fromDateTime = :fromdatetime and e.toDateTime = :todatetime", name = "find tripbooking by multiple")
-})
 public class TripBooking {
 	@Id
 	@GeneratedValue

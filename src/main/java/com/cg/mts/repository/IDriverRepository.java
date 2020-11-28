@@ -15,4 +15,5 @@ public interface IDriverRepository extends JpaRepository<Driver, Integer> {
 //	public Driver viewDriver(int driverId)throws DriverNotFoundException;
 	@Query(value="Select a from Driver a where a.rating >=4.5f")
 	public List<Driver>viewBestDrivers()throws DriverNotFoundException;
+	public Driver findByUsernameAndPassword(String username, String password);
 }

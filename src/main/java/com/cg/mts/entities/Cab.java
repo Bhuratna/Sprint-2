@@ -3,16 +3,10 @@ package com.cg.mts.entities;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="cabtable")
-@NamedQueries({
-	@NamedQuery(query="select c from Cab c where c.carType = :cartype", name="Find cabs from cars"),
-	@NamedQuery(query="select count(c) from Cab c where c.carType = :cartype", name = "find cabs from cartype")
-})
 public class Cab {
 	@Id
 	@GeneratedValue

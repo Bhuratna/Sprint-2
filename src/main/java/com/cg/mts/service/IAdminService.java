@@ -15,4 +15,5 @@ public interface IAdminService {
 	public List<TripBooking>getTripsCustomerwise();
 	public List<TripBooking>getTripsDatewise();
 	public List<TripBooking>getAllTripsForDays(int customerId, LocalDateTime fromDate, LocalDateTime toDate);
+	public Admin validateAdmin(String username, String password);
 }

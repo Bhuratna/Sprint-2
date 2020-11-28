@@ -3,6 +3,7 @@ package com.cg.mts.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +22,7 @@ import com.cg.mts.service.ICustomerService;
  * controller consists of @Controller and @ResponseBody annotation
  */
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 public class CustomerController {
 
 	/*
@@ -57,8 +59,9 @@ public class CustomerController {
 	 * This method will delete a customer object from the database table, which we
 	 * have passed in the method
 	 */
-	@DeleteMapping("/delete")
-	public void delete(@RequestBody Customer customer) {
+	@DeleteMapping("/delete/{id}")
+	public void delete(@PathVariable("id") int customerId) {
+		Customer customer = customerService.viewCustomer(customerId);
 		customer = customerService.deleteCustomer(customer);
 	}
 
@@ -66,14 +69,14 @@ public class CustomerController {
 	 * This method will return a customer object whose id matches with the one we
 	 * have passed in the url
 	 */
-	@GetMapping("/get/{id}")
+	@GetMapping("/retrieve/{id}")
 	public Customer getCustomer(@PathVariable("id") int id) {
 		Customer customer = customerService.viewCustomer(id);
 		return customer;
 	}
 
 	/* This method will return list of customers available in the database */
-	@GetMapping("/get/allCustomers")
+	@GetMapping("/retrieve/allCustomers")
 	public List<Customer> getAllCustomers() {
 		List<Customer> listOfAllCustomer = customerService.viewCustomers();
 		return listOfAllCustomer;
@@ -83,7 +86,7 @@ public class CustomerController {
 	 * This method will return customer object whose username and password matches
 	 * with the one we would pass in the url
 	 */
-	@GetMapping("/get/validateCustomer/{username}/{password}")
+	@GetMapping("/retrieve/validateCustomer/{username}/{password}")
 	public Customer validateCustomer(@PathVariable("username") String username,
 			@PathVariable("password") String password) {
 		Customer customer = customerService.validateCustomer(username, password);

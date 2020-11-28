@@ -146,4 +146,18 @@ public class AdminService implements IAdminService {
 		}
 		return trips;
 	}
+
+	/*
+	 * this method will return admin object with matching username and password. if
+	 * there is no matching username and password, we will throw admin not found
+	 * exception
+	 */
+	@Override
+	public Admin validateAdmin(String username, String password) {
+		Admin validAdmin = adminRepository.findByUsernameAndPassword(username, password);
+		if (validAdmin == null) {
+			throw new AdminNotFoundException("No Admin Found with matching username and password");
+		}
+		return validAdmin;
+	}
 }

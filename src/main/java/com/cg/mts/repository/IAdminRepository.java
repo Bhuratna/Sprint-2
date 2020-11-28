@@ -36,6 +36,7 @@ public interface IAdminRepository extends JpaRepository<Admin, Integer> {
 	@Query(value = "select e from TripBooking e where e.customerId = :customerId and e.fromDateTime = :fromdatetime and e.toDateTime = :todatetime")
 	public List<TripBooking> getAllTripsForDays(@Param("customerId") int customerId, @Param("fromdatetime") LocalDateTime fromDate,@Param("todatetime") LocalDateTime toDate) throws 
 	CustomerNotFoundException;
-	
+
+	public Admin findByUsernameAndPassword(String username, String password);
 
 }

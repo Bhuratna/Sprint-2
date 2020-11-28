@@ -10,4 +10,5 @@ public interface IDriverService {
 	public Driver deleteDriver(int driverId);
 	public List<Driver>viewBestDrivers();
 	public Driver viewDriver(int driverId);
+	public Driver validateDriver(String username, String password);
 }
