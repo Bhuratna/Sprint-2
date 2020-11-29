@@ -23,8 +23,6 @@ public class Driver extends AbstractUser {
 	@OneToOne(cascade = { CascadeType.ALL })
 	private Cab cab;
 	private float rating;
-	@OneToMany(mappedBy = "driver")
-	private List<TripBooking> list;
 
 	public Driver(String username, String password, String mobileNumber, String email, String licenseNo, Cab cab,
 			float rating) {
@@ -71,11 +69,11 @@ public class Driver extends AbstractUser {
 		this.rating = rating;
 	}
 
-	public List<TripBooking> getList() {
-		return list;
-	}
-
-	public void setList(List<TripBooking> list) {
-		this.list = list;
-	}
+//	public List<TripBooking> getList() {
+//		return list;
+//	}
+//
+//	public void setList(List<TripBooking> list) {
+//		this.list = list;
+//	}
 }

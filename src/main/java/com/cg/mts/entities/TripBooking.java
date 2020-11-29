@@ -14,7 +14,7 @@ import javax.persistence.Table;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Entity
-@Table(name="tripsbooking")
+@Table(name="tripsbookings")
 public class TripBooking {
 	@Id
 	@GeneratedValue
@@ -22,7 +22,7 @@ public class TripBooking {
 	private int customerId;
 	@Autowired
 	@ManyToOne(cascade = {CascadeType.ALL}, fetch=FetchType.EAGER)
-	@JoinColumn(name = "Driver")
+	@JoinColumn(name = "driverId")
 	private Driver driver;
 	private String fromLocation;
 	private String toLocation;
